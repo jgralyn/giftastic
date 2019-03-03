@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>R&B Music Quotes</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+        <div id="person-view"></div>
+        <form id="person-form">
+          <label for="person-input">Add Your Favorite Singer</label>
+          <input type="text" id="person-input"><br>
+          <input id="add-person" type="submit" value="Add Your Favorite Singer">
+        </form> 
+    
+
+  <button data-person="Michael Jackson">Can it be I stayed away too long? Did I leave your mind when I was gone? </button>
+  <button data-person="Toni Braxton">Cause you mean the world to me
+    You are my everything</button>
+  <button data-person="Boyz to Men">I'll make love to you, When you want me to
+And I will not let go, 'Till you tell me to</button>
+  <button data-person="Jay Z">I can't see 'em comin down my eyes
+So I gotta make the song cry</button>
+  <button data-person="Faith Evans">Sleepless nights and lonely days are all that fill my head all of the time, oh baby
+But all I do is think about the way you make me feel</button>
+<button data-person="Mary J. Blige">Well I'm not gon cry, I'm not gon cry, I'm not gon shed no tears, No, I'm not gon cry, It's not the time, Cause you're not worth my tears</button>
+<button data-person="New Edition">Candy girl, all I want to say, when you're with me you brighten up my day</button>
+
+  <div id="gifs-appear-here">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    
+    $("button").on("click", function() {
+
+      var person = $(this).attr("data-person");
+
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        person + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        
+        .then(function(response) {
+          
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+
+          if (results[i].rating !== "PG" && results[i].rating !== "G" && results[i].rating !== "r" && results[i].rating !== "pg-13") {
+              
+              var gifDiv = $("<div>");
+              var rating = results[i].rating;
+              var p = $("<p>").text("Rating: " + rating);
+              var personImage = $("<img>");
+              personImage.attr("src", results[i].images.fixed_height.url);
+
+              gifDiv.append(p);
+              gifDiv.append(personImage);
+
+              $("#gifs-appear-here").prepend(gifDiv);
+            }
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
